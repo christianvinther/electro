@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElektroStorage</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">E</div>
+                <div class="brand-text">
+                    <span class="brand-name">ElektroStorage</span>
+                </div>
+            </div>
+            <nav class="nav" id="top-nav">
+                <div class="nav-group">
+                    <span class="nav-group-label">Katalog</span>
+                    <button class="nav-item" data-view="components" type="button">
+                        <span class="nav-label">Komponenter</span>
+                    </button>
+                    <button class="nav-item" data-view="assemblies" type="button">
+                        <span class="nav-label">Styklister</span>
+                    </button>
+                </div>
+                <div class="nav-group">
+                    <span class="nav-group-label">Lager</span>
+                    <button class="nav-item" data-view="inventory" type="button">
+                        <span class="nav-label">Beholdning</span>
+                    </button>
+                </div>
+                <div class="nav-group">
+                    <span class="nav-group-label">Indkøb</span>
+                    <button class="nav-item" data-view="orders" type="button">
+                        <span class="nav-label">Bestillinger</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div class="crumbs" id="crumbs"></div>
+                <div class="topbar-spacer"></div>
+                <div class="avatar">CV</div>
+            </header>
+            <section id="app">
+                <p class="loading-state">Henter…</p>
+            </section>
+        </main>
+    </div>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
