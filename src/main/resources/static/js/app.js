@@ -17,12 +17,8 @@ const views = {
     }
 };
 
-const navTopName = {
-    'order-detail': 'orders'
-};
-
 function navigateTo(name, arg) {
-    const topName = navTopName[name] ?? name;
+    const topName = name === 'order-detail' ? 'orders' : name;
     document.querySelectorAll('#top-nav .nav-item')
         .forEach(b => b.classList.toggle('active', b.dataset.view === topName));
     setCrumbs(name, arg);

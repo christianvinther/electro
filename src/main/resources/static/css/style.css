@@ -291,7 +291,6 @@ button.btn.primary[disabled] {
 .cell.name { font-weight: 500; color: var(--ink); }
 .cell.right { text-align: right; }
 .cell.actions { display: flex; justify-content: flex-end; gap: 4px; }
-.cell.dim { color: var(--faint); }
 .received-quantity { font-weight: 500; }
 .total-quantity { font-weight: 600; }
 .order-total-row { background: var(--panel); }
@@ -302,7 +301,6 @@ button.btn.primary[disabled] {
 .w-160 { width: 160px; flex: 0 0 160px; }
 .w-80  { width: 80px;  flex: 0 0 80px; }
 .w-60  { width: 60px;  flex: 0 0 60px; }
-.w-36  { width: 36px;  flex: 0 0 36px; }
 .w-grow { flex: 1; min-width: 0; }
 
 .page-meta {
@@ -393,48 +391,11 @@ button.btn.primary[disabled] {
 .aside-card .v { font-size: 13.5px; font-weight: 500; }
 .aside-card .v.mono { font-family: var(--font-mono); font-size: 12.5px; font-weight: 400; }
 .aside-card .v-sub { font-size: 11.5px; color: var(--muted); }
-.aside-card .v-sub.warn { color: var(--status-warn-fg); }
 .aside-card hr {
     border: 0;
     border-top: 1px solid var(--hairline);
     margin: 0;
 }
-
-.timeline { display: flex; flex-direction: column; gap: 0; }
-.timeline-row { display: flex; gap: 10px; }
-.timeline-rail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 14px;
-    flex-shrink: 0;
-    padding-top: 4px;
-}
-.timeline-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: var(--radius-pill);
-    background: var(--faint);
-}
-.timeline-dot.warn   { background: var(--status-warn-fg); }
-.timeline-dot.active { background: var(--status-active-fg); }
-.timeline-dot.draft  { background: var(--status-draft-fg); }
-.timeline-line {
-    width: 1.5px;
-    flex: 1;
-    background: var(--hairline);
-}
-.timeline-body {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding-bottom: 14px;
-    min-width: 0;
-}
-.timeline-row:last-child .timeline-body { padding-bottom: 0; }
-.timeline-title { font-size: 13px; font-weight: 500; }
-.timeline-sub { font-size: 11.5px; color: var(--muted); }
-.timeline-when { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
 
 .drawer-scrim {
     position: fixed;
@@ -513,11 +474,6 @@ button.btn.primary[disabled] {
 .field select:focus {
     outline: 2px solid var(--accent-soft);
     border-color: var(--accent);
-}
-.field-error {
-    color: var(--status-danger-fg);
-    font-size: 12px;
-    min-height: 0;
 }
 .form-error {
     color: var(--status-danger-fg);

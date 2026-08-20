@@ -8,16 +8,26 @@ import dk.ek.chri585u.electro.model.Order;
 import dk.ek.chri585u.electro.model.OrderLine;
 import dk.ek.chri585u.electro.model.OrderStatus;
 import dk.ek.chri585u.electro.model.Supplier;
+import dk.ek.chri585u.electro.repository.ComponentRepository;
+import dk.ek.chri585u.electro.repository.OrderRepository;
+import dk.ek.chri585u.electro.repository.SupplierRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class InventoryServiceTest extends AbstractServiceTest {
+@SpringBootTest
+@Transactional
+class InventoryServiceTest {
 
     @Autowired private InventoryService inventoryService;
+    @Autowired private SupplierRepository supplierRepository;
+    @Autowired private ComponentRepository componentRepository;
+    @Autowired private OrderRepository orderRepository;
 
     private Component received;
     private Component countedOnly;

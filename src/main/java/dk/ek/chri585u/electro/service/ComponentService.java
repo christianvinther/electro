@@ -41,7 +41,13 @@ public class ComponentService {
             throw new IllegalStateException(
                 "En komponent med internt nummer " + dto.internalNumber() + " findes allerede");
         }
-        Component saved = componentRepository.save(DtoMapper.toComponentEntity(dto, supplier));
+        Component entity = new Component(
+            dto.name(),
+            dto.internalNumber(),
+            dto.externalPartNumber(),
+            supplier
+        );
+        Component saved = componentRepository.save(entity);
         return DtoMapper.toComponentDTO(saved, isOrderable(saved));
     }
 

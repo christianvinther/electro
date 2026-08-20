@@ -12,7 +12,6 @@ import dk.ek.chri585u.electro.model.Order;
 import dk.ek.chri585u.electro.model.OrderLine;
 import dk.ek.chri585u.electro.model.OrderStatus;
 import dk.ek.chri585u.electro.repository.OrderRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,18 +50,15 @@ public class InventoryService {
             }
         }
 
-        Map<Long, StockCount> latestCountByComponent = new LinkedHashMap<>();
-        for (StockCount sc : stockCountRepository.findAll(Sort.by(Sort.Direction.DESC, "countedAt"))) {
+        for (StockCount sc : stockCountRepository.findAll()) {
             Component c = sc.getComponent();
             if (c == null) continue;
-            latestCountByComponent.putIfAbsent(c.getId(), sc);
             receivedByComponent.putIfAbsent(c.getId(), 0);
             nameByComponent.putIfAbsent(c.getId(), c.getName());
         }
 
         return receivedByComponent.entrySet().stream()
-            .map(e -> buildRow(e.getKey(), nameByComponent.get(e.getKey()), e.getValue(),
-                latestCountByComponent.get(e.getKey())))
+            .map(e -> buildRow(e.getKey(), nameByComponent.get(e.getKey()), e.getValue()))
             .sorted(Comparator.comparing(InventoryRowDTO::componentName))
             .toList();
     }
@@ -84,8 +80,10 @@ public class InventoryService {
         return DtoMapper.toStockCountDTO(stockCountRepository.save(entity));
     }
 
-    private InventoryRowDTO buildRow(Long componentId, String componentName, int totalReceived,
-                                     StockCount latest) {
+    private InventoryRowDTO buildRow(Long componentId, String componentName, int totalReceived) {
+        StockCount latest = stockCountRepository
+            .findTopByComponentIdOrderByCountedAtDesc(componentId)
+            .orElse(null);
         return new InventoryRowDTO(
             componentId,
             componentName,

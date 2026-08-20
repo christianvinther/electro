@@ -59,14 +59,8 @@ public class OrderService {
         Supplier supplier = supplierRepository.findById(dto.supplierId())
             .orElseThrow(() -> new NotFoundException("Leverandør ikke fundet med id: " + dto.supplierId()));
         Order order = new Order(supplier);
-        order.setStatus(OrderStatus.DRAFT);
         order.setTrackingCode(dto.trackingCode());
         order.setExpectedDeliveryDate(dto.expectedDeliveryDate());
-        if (dto.lines() != null) {
-            for (OrderLineDTO lineDto : dto.lines()) {
-                order.addLine(buildLine(lineDto));
-            }
-        }
         return DtoMapper.toOrderDTO(orderRepository.save(order));
     }
 

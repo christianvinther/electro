@@ -43,10 +43,6 @@ public class DtoMapper {
         );
     }
 
-    public static Component toComponentEntity(ComponentDTO dto, Supplier supplier) {
-        return new Component(dto.name(), dto.internalNumber(), dto.externalPartNumber(), supplier);
-    }
-
     public static AssemblyPartDTO toAssemblyPartDTO(AssemblyPart part) {
         Component c = part.getComponent();
         return new AssemblyPartDTO(

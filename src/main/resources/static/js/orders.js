@@ -175,7 +175,6 @@ function displayOrderDetail(order, components, navigateTo) {
             </div>
             <aside class="detail-aside">
                 ${renderDetailsCard(order)}
-                ${renderActivityCard(order)}
             </aside>
         </div>
     `;
@@ -237,53 +236,6 @@ function renderDetailsCard(order) {
                 <span class="k">Sporingskode</span>
                 <span class="v mono">${escapeHtml(order.trackingCode ?? '—')}</span>
             </div>
-        </div>
-    `;
-}
-
-function renderActivityCard(order) {
-    const events = [];
-    if (order.receivedDate) {
-        events.push({
-            title: 'Bestilling modtaget',
-            sub: 'SENT → RECEIVED',
-            when: formatDate(order.receivedDate),
-            dot: 'active'
-        });
-    }
-    if (order.sentDate) {
-        events.push({
-            title: 'Bestilling sendt',
-            sub: 'DRAFT → SENT',
-            when: formatDate(order.sentDate),
-            dot: 'warn'
-        });
-    }
-    events.push({
-        title: 'Bestilling oprettet',
-        sub: `DRAFT · ${order.lines.length} ${order.lines.length === 1 ? 'linje' : 'linjer'}`,
-        when: '',
-        dot: 'draft'
-    });
-
-    const rows = events.map((e, i) => `
-        <div class="timeline-row">
-            <div class="timeline-rail">
-                <span class="timeline-dot ${e.dot}"></span>
-                ${i < events.length - 1 ? '<span class="timeline-line"></span>' : ''}
-            </div>
-            <div class="timeline-body">
-                <span class="timeline-title">${escapeHtml(e.title)}</span>
-                <span class="timeline-sub">${escapeHtml(e.sub)}</span>
-                ${e.when ? `<span class="timeline-when">${escapeHtml(e.when)}</span>` : ''}
-            </div>
-        </div>
-    `).join('');
-
-    return `
-        <div class="aside-card">
-            <span class="section-label">Aktivitet</span>
-            <div class="timeline">${rows}</div>
         </div>
     `;
 }
