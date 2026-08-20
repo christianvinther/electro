@@ -36,10 +36,13 @@ class OrderServiceTest {
     }
 
     @Test
-    void createDraft_startsEmptyWithDraftStatus() {
-        OrderDTO input = new OrderDTO(null, supplier.getId(), null, null, null,
+    void createDraft_startsEmptyAndRejectsLines() {
+        OrderDTO withLine = new OrderDTO(null, supplier.getId(), null, null, null,
             null, null, null, List.of(new OrderLineDTO(null, component.getId(), null, 4)));
+        assertThrows(IllegalArgumentException.class, () -> orderService.createDraft(withLine));
 
+        OrderDTO input = new OrderDTO(null, supplier.getId(), null, null, null,
+            null, null, null, List.of());
         OrderDTO created = orderService.createDraft(input);
 
         assertNotNull(created.id());

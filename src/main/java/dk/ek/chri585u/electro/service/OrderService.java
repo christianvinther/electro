@@ -56,6 +56,10 @@ public class OrderService {
 
     @Transactional
     public OrderDTO createDraft(OrderDTO dto) {
+        if (dto.lines() != null && !dto.lines().isEmpty()) {
+            throw new IllegalArgumentException(
+                "Linjer skal tilføjes efter bestillingen er oprettet");
+        }
         Supplier supplier = supplierRepository.findById(dto.supplierId())
             .orElseThrow(() -> new NotFoundException("Leverandør ikke fundet med id: " + dto.supplierId()));
         Order order = new Order(supplier);

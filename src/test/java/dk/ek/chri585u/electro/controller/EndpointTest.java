@@ -161,7 +161,8 @@ class EndpointTest {
                 .content("""
                     {"name":"","internalNumber":9102}
                     """))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail").value("Navn må ikke være tomt"));
     }
 
     @Test
