@@ -33,7 +33,7 @@ export const fetchAllComponents   = ()    => get('/components');
 export const createComponent      = (dto) => send('/components', 'POST', dto);
 export const discontinueComponent = (id)  => send(`/components/${id}/discontinue`, 'PATCH');
 
-export const fetchOrders     = ()       => get('/orders');
+export const fetchOrders     = ()       => get('/orders?status=open');
 export const fetchOrder      = (id)     => get(`/orders/${id}`);
 export const createOrder     = (dto)    => send('/orders', 'POST', dto);
 export const addOrderLine    = (id, dto)=> send(`/orders/${id}/lines`, 'POST', dto);
