@@ -43,6 +43,7 @@ public class Order {
         this.supplier = supplier;
     }
 
+    // Holder begge sider af JPA-relationen opdateret.
     public void addLine(OrderLine line) {
         lines.add(line);
         line.setOrder(this);

@@ -1,5 +1,6 @@
 const BASE = '/api';
 
+// fetch kaster ikke selv fejl ved fx 400 eller 404, så status tjekkes efter hvert kald.
 async function get(path) {
     const res = await fetch(BASE + path);
     if (!res.ok) throw await toError(res);

@@ -56,6 +56,7 @@ public class OrderService {
 
     @Transactional
     public OrderDTO createDraft(OrderDTO dto) {
+        // Nye bestillinger starter tomme; linjer tilføjes gennem deres eget endpoint.
         if (dto.lines() != null && !dto.lines().isEmpty()) {
             throw new IllegalArgumentException(
                 "Linjer skal tilføjes efter bestillingen er oprettet");

@@ -25,6 +25,7 @@ public class Assembly {
         this.producedComponent = producedComponent;
     }
 
+    // Holder begge sider af JPA-relationen opdateret.
     public void addPart(AssemblyPart part) {
         parts.add(part);
         part.setAssembly(this);

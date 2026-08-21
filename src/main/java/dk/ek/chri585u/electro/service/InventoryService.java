@@ -40,6 +40,8 @@ public class InventoryService {
     public List<InventoryRowDTO> listInventory() {
         Map<Long, Integer> receivedByComponent = new LinkedHashMap<>();
         Map<Long, String> nameByComponent = new LinkedHashMap<>();
+
+        // Lageret bygger kun på bestillinger, der er modtaget.
         List<Order> receivedOrders = orderRepository.findByStatus(OrderStatus.RECEIVED);
         for (Order order : receivedOrders) {
             for (OrderLine line : order.getLines()) {
@@ -50,6 +52,7 @@ public class InventoryService {
             }
         }
 
+        // En optalt komponent skal også vises, selv om modtaget antal er nul.
         for (StockCount sc : stockCountRepository.findAll()) {
             Component c = sc.getComponent();
             if (c == null) continue;
@@ -81,6 +84,7 @@ public class InventoryService {
     }
 
     private InventoryRowDTO buildRow(Long componentId, String componentName, int totalReceived) {
+        // Den nyeste optælling bruges som det faktiske antal.
         StockCount latest = stockCountRepository
             .findTopByComponentIdOrderByCountedAtDesc(componentId)
             .orElse(null);

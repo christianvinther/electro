@@ -18,8 +18,7 @@ import org.springframework.boot.CommandLineRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-// Fully qualified annotation because the model class Component is imported —
-// the domain type wins the short name, Spring's stereotype takes the long one.
+// Det fulde navn bruges, fordi vores modelklasse også hedder Component.
 @org.springframework.stereotype.Component
 public class InitData implements CommandLineRunner {
 
@@ -43,18 +42,17 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Guard: seed only an empty database. With H2 create-drop this is always
-        // empty; with MySQL and ddl-auto=update it prevents duplicate seed data.
+        // Startdata skal kun sættes ind i en tom database.
         if (supplierRepository.count() > 0) {
             return;
         }
 
-        // Suppliers
+        // Leverandører
         Supplier elfa = supplierRepository.save(new Supplier("Elfa Distrelec", "Industrivej 14, 2600 Glostrup"));
         Supplier rs = supplierRepository.save(new Supplier("RS Components", "Lautrupvang 4, 2750 Ballerup"));
         Supplier farnell = supplierRepository.save(new Supplier("Farnell Danmark", "Strandvejen 60, 2900 Hellerup"));
 
-        // Orderable components — 10 rows including the four Lysende LED parts
+        // Bestilbare komponenter
         Component led = componentRepository.save(new Component("LED 5mm rød", 1001, "L-7104ID", elfa));
         Component resistor = componentRepository.save(new Component("Modstand 1kΩ", 1002, "CFR-25JB-52-1K", rs));
         Component holder = componentRepository.save(new Component("Batteriholder 9V", 1003, "BH9V-PC", farnell));
@@ -66,11 +64,10 @@ public class InitData implements CommandLineRunner {
         Component trykknap = componentRepository.save(new Component("Trykknap", 1009, "B3F-1000", elfa));
         Component print = componentRepository.save(new Component("Print 5x7cm", 1010, "PCB-5x7", farnell));
 
-        // Assembled-only components (no supplier — not orderable)
         Component ledKitProduct = componentRepository.save(new Component("Lysende LED", 2001, null, null));
         Component flashlightProduct = componentRepository.save(new Component("Lommelampe (samlesæt)", 2002, null, null));
 
-        // Inner assembly — the brief's "Lysende LED" kit
+        // Styklister
         Assembly ledKit = new Assembly(ledKitProduct);
         ledKit.addPart(new AssemblyPart(1, led));
         ledKit.addPart(new AssemblyPart(1, resistor));
@@ -78,20 +75,17 @@ public class InitData implements CommandLineRunner {
         ledKit.addPart(new AssemblyPart(1, battery));
         assemblyRepository.save(ledKit);
 
-        // Outer assembly — Lommelampe includes the assembled-only ledKitProduct as a part.
-        // This is the recursion proof: a stykliste's produced component is itself a part of another stykliste.
         Assembly flashlight = new Assembly(flashlightProduct);
         flashlight.addPart(new AssemblyPart(1, ledKitProduct));
         flashlight.addPart(new AssemblyPart(1, trykknap));
         flashlight.addPart(new AssemblyPart(1, print));
         assemblyRepository.save(flashlight);
 
-        // Draft order — being formulated, no dates set yet
+        // Bestillinger
         Order draftOrder = new Order(farnell);
         draftOrder.addLine(new OrderLine(25, holder));
         orderRepository.save(draftOrder);
 
-        // Active sent order — 3 lines × 10 stk., status SENT
         Order activeOrder = new Order(elfa);
         activeOrder.setTrackingCode("DK1234567890");
         activeOrder.setStatus(OrderStatus.SENT);
@@ -102,7 +96,6 @@ public class InitData implements CommandLineRunner {
         activeOrder.addLine(new OrderLine(10, greenLed));
         orderRepository.save(activeOrder);
 
-        // Completed received order — 1 line × 100 stk., status RECEIVED
         Order completedOrder = new Order(rs);
         completedOrder.setTrackingCode("DK9876543210");
         completedOrder.setStatus(OrderStatus.RECEIVED);
@@ -112,10 +105,8 @@ public class InitData implements CommandLineRunner {
         completedOrder.addLine(new OrderLine(100, resistor220));
         orderRepository.save(completedOrder);
 
-        // Initial optællinger so the inventory page has something interesting on first load
-        // 1) resistor220: received 100, counted 95 — to show counted < received discrepancy
+        // Lageroptællinger
         stockCountRepository.save(new StockCount(resistor220, 95, "Christian", LocalDateTime.now().minusDays(2)));
-        // 2) led: counted 7 without ever being received — demonstrates count-without-receipt
         stockCountRepository.save(new StockCount(led, 7, "Christian", LocalDateTime.now().minusDays(1)));
     }
 }
